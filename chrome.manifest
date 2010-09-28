@@ -1,0 +1,2 @@
+content komodolilypond jar:komodolilypond.jar!/content/ xpcnativewrappers=yes
+overlay chrome://komodo/content/komodo.xul chrome://komodolilypond/content/overlay.xul
