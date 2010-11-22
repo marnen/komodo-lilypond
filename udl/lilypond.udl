@@ -20,4 +20,5 @@ state IN_M_COMMENT:
 /\n/ : paint(include, M_COMMENT), => IN_M_DEFAULT
 
 state IN_M_STRING:
+'\\"' : #stay
 '"' : paint(include, M_STRING), => IN_M_DEFAULT
