@@ -8,9 +8,12 @@ end_style M_COMMENT
 initial IN_M_DEFAULT
 
 state IN_M_DEFAULT:
-'%{' : paint(upto, M_DEFAULT), => IN_M_COMMENT
+'%{' : paint(upto, M_DEFAULT), => IN_M_BLOCK_COMMENT
+'%' : paint(upto, M_DEFAULT), => IN_M_COMMENT
 
-state IN_M_COMMENT:
+state IN_M_BLOCK_COMMENT:
 '}' : paint(include, M_COMMENT), => IN_M_DEFAULT
 /\z/ : paint(upto, M_COMMENT)
 
+state IN_M_COMMENT:
+/\n/ : paint(include, M_COMMENT), => IN_M_DEFAULT
