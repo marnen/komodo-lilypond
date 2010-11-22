@@ -2,8 +2,8 @@
 \version "2.13.31"
 
 %{
-  Here's a multiline comment.
-}
+  Here's a multiline comment. Braces { } don't end it.
+%}
 
 \header {
 	title = "Fantasy on Southwestern Folk Songs" 

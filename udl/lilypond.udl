@@ -12,7 +12,7 @@ state IN_M_DEFAULT:
 '%' : paint(upto, M_DEFAULT), => IN_M_COMMENT
 
 state IN_M_BLOCK_COMMENT:
-'}' : paint(include, M_COMMENT), => IN_M_DEFAULT
+'%}' : paint(include, M_COMMENT), => IN_M_DEFAULT
 /\z/ : paint(upto, M_COMMENT)
 
 state IN_M_COMMENT:
