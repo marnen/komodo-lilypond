@@ -1,0 +1,7 @@
+# Main lex file for Lilypond markup.
+sublanguage Lilypond
+family markup
+
+initial IN_M_DEFAULT
+
+state IN_M_DEFAULT
