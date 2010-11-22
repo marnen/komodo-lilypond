@@ -1,6 +1,10 @@
 % Created on Wed Sep 22 15:55:48 EDT 2010
 \version "2.13.31"
 
+%{
+  Here's a multiline comment.
+}
+
 \header {
 	title = "Fantasy on Southwestern Folk Songs" 
  	composer = \markup {
@@ -8,11 +12,11 @@
  	    "Marnen E. Laibow-Koser"
  	    "719 State Street, 1st floor"
  	    "Albany, NY 12203"
- 	    "marnen@marnen.org • (845) 625-7801"
+ 	    "marnen@marnen.org, (845) 625-7801"
  	  }
  	}
  	date = "September 2010"
- 	copyright = "Copyright © 2010 Marnen E. Laibow-Koser (ASCAP). All rights reserved." 
+ 	copyright = "Copyright (c) 2010 Marnen E. Laibow-Koser (ASCAP). All rights reserved." 
 }
 
 \include "english.ly"
