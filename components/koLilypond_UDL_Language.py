@@ -44,4 +44,7 @@ class KoLilypondLanguage(KoUDLLanguage):
     #        lang_from_udl_family = {   # A plain XML can just contain
     #           'M': 'XML',             #   XML
     #        }
-    lang_from_udl_family = {}
+    lang_from_udl_family = {
+        'M': 'Lilypond',
+        'SSL': 'Scheme'
+    }
