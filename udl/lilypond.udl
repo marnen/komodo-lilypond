@@ -13,15 +13,15 @@ pattern NUMBERCHAR = '[\d\.]'
 pattern NONNUMBERCHAR = '[^\d\.]'
 
 state IN_CSL_DEFAULT:
-'%{' : paint(upto, CSL_DEFAULT), => IN_CSL_BLOCK_COMMENT
+'%{' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENTBLOCK
 '%' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENT
 '"' : paint(upto, CSL_DEFAULT), => IN_CSL_STRING
 /\\(?=$IDENTIFIERCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_IDENTIFIER), => IN_CSL_IDENTIFIER
 /\d/ : paint(upto, CSL_DEFAULT), redo, => IN_CSL_NUMBER
 
-state IN_CSL_BLOCK_COMMENT:
-'%}' : paint(include, CSL_COMMENT), => IN_CSL_DEFAULT
-/\z/ : paint(upto, CSL_COMMENT)
+state IN_CSL_COMMENTBLOCK:
+'%}' : paint(include, CSL_COMMENTBLOCK), => IN_CSL_DEFAULT
+/\z/ : paint(upto, CSL_COMMENTBLOCK)
 
 state IN_CSL_COMMENT:
 /\n/ : paint(include, CSL_COMMENT), => IN_CSL_DEFAULT
