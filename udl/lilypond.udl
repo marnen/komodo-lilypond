@@ -2,23 +2,30 @@
 sublanguage Lilypond
 family markup
 
-start_style M_DEFAULT
-end_style M_COMMENT
+start_style CSL_DEFAULT
+end_style CSL_REGEX
 
-initial IN_M_DEFAULT
+initial IN_CSL_DEFAULT
 
-state IN_M_DEFAULT:
-'%{' : paint(upto, M_DEFAULT), => IN_M_BLOCK_COMMENT
-'%' : paint(upto, M_DEFAULT), => IN_M_COMMENT
-'"' : paint(upto, M_DEFAULT), => IN_M_STRING
+pattern IDENTIFIERCHAR = '[^\W\d]' # characters that can appear in identifiers
+pattern NONIDENTIFIERCHAR = '[\W\d]'
 
-state IN_M_BLOCK_COMMENT:
-'%}' : paint(include, M_COMMENT), => IN_M_DEFAULT
-/\z/ : paint(upto, M_COMMENT)
+state IN_CSL_DEFAULT:
+'%{' : paint(upto, CSL_DEFAULT), => IN_CSL_BLOCK_COMMENT
+'%' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENT
+'"' : paint(upto, CSL_DEFAULT), => IN_CSL_STRING
+/\\(?=$IDENTIFIERCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_IDENTIFIER), => IN_CSL_IDENTIFIER
 
-state IN_M_COMMENT:
-/\n/ : paint(include, M_COMMENT), => IN_M_DEFAULT
+state IN_CSL_BLOCK_COMMENT:
+'%}' : paint(include, CSL_COMMENT), => IN_CSL_DEFAULT
+/\z/ : paint(upto, CSL_COMMENT)
 
-state IN_M_STRING:
+state IN_CSL_COMMENT:
+/\n/ : paint(include, CSL_COMMENT), => IN_CSL_DEFAULT
+
+state IN_CSL_STRING:
 '\\"' : #stay
-'"' : paint(include, M_STRING), => IN_M_DEFAULT
+'"' : paint(include, CSL_STRING), => IN_CSL_DEFAULT
+
+state IN_CSL_IDENTIFIER:
+/$NONIDENTIFIERCHAR/ : paint(upto, CSL_IDENTIFIER), => IN_CSL_DEFAULT
