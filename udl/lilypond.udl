@@ -7,8 +7,8 @@ end_style CSL_REGEX
 
 initial IN_CSL_DEFAULT
 
-pattern IDENTIFIERCHAR = '[^\W\d]' # characters that can appear in identifiers
-pattern NONIDENTIFIERCHAR = '[\W\d]'
+pattern KEYWORDCHAR = '[^\W\d]' # characters that can appear in keywords and Lilypond variable names
+pattern NONKEYWORDCHAR = '[\W\d]'
 pattern NUMBERCHAR = '[\d\.]'
 pattern NONNUMBERCHAR = '[^\d\.]'
 
@@ -16,7 +16,7 @@ state IN_CSL_DEFAULT:
 '%{' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENTBLOCK
 '%' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENT
 '"' : paint(upto, CSL_DEFAULT), => IN_CSL_STRING
-/\\(?=$IDENTIFIERCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_IDENTIFIER), => IN_CSL_IDENTIFIER
+/\\(?=$KEYWORDCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_WORD), => IN_CSL_KEYWORD
 /\d/ : paint(upto, CSL_DEFAULT), redo, => IN_CSL_NUMBER
 
 state IN_CSL_COMMENTBLOCK:
@@ -33,5 +33,5 @@ state IN_CSL_STRING:
 state IN_CSL_NUMBER:
 /$NONNUMBERCHAR/ : paint(upto, CSL_NUMBER), => IN_CSL_DEFAULT
 
-state IN_CSL_IDENTIFIER:
-/$NONIDENTIFIERCHAR/ : paint(upto, CSL_IDENTIFIER), redo, => IN_CSL_DEFAULT
+state IN_CSL_KEYWORD:
+/$NONKEYWORDCHAR/ : paint(upto, CSL_WORD), redo, => IN_CSL_DEFAULT
