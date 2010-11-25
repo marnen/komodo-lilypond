@@ -12,6 +12,7 @@ pattern IDENTIFIERCHAR = '(?!\d)[-\w]' # characters that can appear in keywords 
 pattern NONIDENTIFIERCHAR = '(\d|[^-\w])'
 pattern NUMBERCHAR = '[\d\.]'
 pattern NONNUMBERCHAR = '[^\d\.]'
+pattern OPCHAR = '[\.=\/]' # operators
 
 state IN_CSL_DEFAULT:
 '%{' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENTBLOCK
@@ -20,6 +21,7 @@ state IN_CSL_DEFAULT:
 /\\(?=$STARTIDENTIFIERCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_IDENTIFIER), => IN_CSL_IDENTIFIER
 /\d/ : paint(upto, CSL_DEFAULT), redo, => IN_CSL_NUMBER
 /^\s*(?=$STARTIDENTIFIERCHAR$IDENTIFIERCHAR*\s*=)/ : paint(include, CSL_DEFAULT), => IN_CSL_IDENTIFIER
+/$OPCHAR/ : paint(upto, CSL_DEFAULT), paint(include, CSL_OPERATOR) # stay
 
 state IN_CSL_COMMENTBLOCK:
 '%}' : paint(include, CSL_COMMENTBLOCK), => IN_CSL_DEFAULT
@@ -29,7 +31,7 @@ state IN_CSL_COMMENT:
 /\n/ : paint(include, CSL_COMMENT), => IN_CSL_DEFAULT
 
 state IN_CSL_STRING:
-'\\"' : #stay
+'\\"' : # stay
 '"' : paint(include, CSL_STRING), => IN_CSL_DEFAULT
 
 state IN_CSL_NUMBER:
