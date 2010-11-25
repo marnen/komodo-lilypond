@@ -8,11 +8,13 @@ end_style CSL_REGEX
 initial IN_CSL_DEFAULT
 
 pattern STARTIDENTIFIERCHAR = '(?!\d)\w' # characters that can start identifiers
-pattern IDENTIFIERCHAR = '(?!\d)[-\w]' # characters that can appear in keywords and Lilypond identifiers
-pattern NONIDENTIFIERCHAR = '(\d|[^-\w])'
+pattern IDENTIFIERCHAR = '(?![\d_])[\w]' # characters that can appear in keywords and Lilypond identifiers
+pattern NONIDENTIFIERCHAR = '([\d_]|[^\w])'
 pattern NUMBERCHAR = '[\d\.]'
 pattern NONNUMBERCHAR = '[^\d\.]'
 pattern OPCHAR = '[\.=\/]' # operators
+pattern NONOPCHAR = '[^\.=\/]'
+pattern LVALUE = '\S+\s*' # left side of an assignment
 
 state IN_CSL_DEFAULT:
 '%{' : paint(upto, CSL_DEFAULT), => IN_CSL_COMMENTBLOCK
@@ -20,7 +22,7 @@ state IN_CSL_DEFAULT:
 '"' : paint(upto, CSL_DEFAULT), => IN_CSL_STRING
 /\\(?=$STARTIDENTIFIERCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_IDENTIFIER), => IN_CSL_IDENTIFIER
 /\d/ : paint(upto, CSL_DEFAULT), redo, => IN_CSL_NUMBER
-/^\s*(?=$STARTIDENTIFIERCHAR$IDENTIFIERCHAR*\s*=)/ : paint(include, CSL_DEFAULT), => IN_CSL_IDENTIFIER
+/^\s*(?=$LVALUE=)/ : paint(include, CSL_DEFAULT), => IN_ASSIGNMENT
 /$OPCHAR/ : paint(upto, CSL_DEFAULT), paint(include, CSL_OPERATOR) # stay
 
 state IN_CSL_COMMENTBLOCK:
@@ -39,3 +41,8 @@ state IN_CSL_NUMBER:
 
 state IN_CSL_IDENTIFIER:
 /$NONIDENTIFIERCHAR/ : paint(upto, CSL_IDENTIFIER), redo, => IN_CSL_DEFAULT
+
+state IN_ASSIGNMENT: # For assignment statements
+'.' : paint(include, CSL_OPERATOR) # stay
+'=' : paint(include, CSL_OPERATOR), => IN_CSL_DEFAULT
+/./ : paint(include, CSL_IDENTIFIER)
