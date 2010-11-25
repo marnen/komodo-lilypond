@@ -33,7 +33,7 @@ state IN_CSL_STRING:
 '"' : paint(include, CSL_STRING), => IN_CSL_DEFAULT
 
 state IN_CSL_NUMBER:
-/$NONNUMBERCHAR/ : paint(upto, CSL_NUMBER), => IN_CSL_DEFAULT
+/$NONNUMBERCHAR/ : paint(upto, CSL_NUMBER), redo, => IN_CSL_DEFAULT
 
 state IN_CSL_IDENTIFIER:
 /$NONIDENTIFIERCHAR/ : paint(upto, CSL_IDENTIFIER), redo, => IN_CSL_DEFAULT
