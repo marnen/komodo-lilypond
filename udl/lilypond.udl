@@ -12,8 +12,7 @@ pattern IDENTIFIERCHAR = '(?![\d_])[\w]' # characters that can appear in keyword
 pattern NONIDENTIFIERCHAR = '([\d_]|[^\w])'
 pattern NUMBERCHAR = '[\d\.]'
 pattern NONNUMBERCHAR = '[^\d\.]'
-pattern OPCHAR = '[\.=\/]' # operators
-pattern NONOPCHAR = '[^\.=\/]'
+pattern OPCHAR = '[\.=\/\{\}<>|]' # operators
 pattern LVALUE = '\S+\s*' # left side of an assignment
 
 state IN_CSL_DEFAULT:
@@ -46,3 +45,4 @@ state IN_ASSIGNMENT: # For assignment statements
 '.' : paint(include, CSL_OPERATOR) # stay
 '=' : paint(include, CSL_OPERATOR), => IN_CSL_DEFAULT
 /./ : paint(include, CSL_IDENTIFIER)
+
