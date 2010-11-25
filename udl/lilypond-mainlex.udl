@@ -2,4 +2,4 @@
 
 language Lilypond
 
-#...
+include 'lilypond.udl'
