@@ -19,6 +19,7 @@ state IN_CSL_DEFAULT:
 '"' : paint(upto, CSL_DEFAULT), => IN_CSL_STRING
 /\\(?=$STARTIDENTIFIERCHAR)/ : paint(upto, CSL_DEFAULT), paint(include, CSL_IDENTIFIER), => IN_CSL_IDENTIFIER
 /\d/ : paint(upto, CSL_DEFAULT), redo, => IN_CSL_NUMBER
+/^\s*(?=$STARTIDENTIFIERCHAR$IDENTIFIERCHAR*\s*=)/ : paint(include, CSL_DEFAULT), => IN_CSL_IDENTIFIER
 
 state IN_CSL_COMMENTBLOCK:
 '%}' : paint(include, CSL_COMMENTBLOCK), => IN_CSL_DEFAULT
