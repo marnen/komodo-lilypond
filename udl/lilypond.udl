@@ -46,3 +46,9 @@ state IN_ASSIGNMENT: # For assignment statements
 '=' : paint(include, CSL_OPERATOR), => IN_CSL_DEFAULT
 /./ : paint(include, CSL_IDENTIFIER)
 
+fold '{' CSL_OPERATOR +
+fold '}' CSL_OPERATOR -
+fold '<<' CSL_OPERATOR +
+fold '>>' CSL_OPERATOR -
+fold '<' CSL_OPERATOR +
+fold '>' CSL_OPERATOR -
